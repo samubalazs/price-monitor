@@ -1,0 +1,2 @@
+export const GET_TICKER_HISTORY = "GET_TICKER_HISTORY";
+export const HISTORY_ERROR = "HISTORY_ERROR";
