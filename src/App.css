@@ -1,16 +1,65 @@
 .App {
   text-align: center;
   padding: 10px;
+  width: 1200px;
+  margin: 0 auto;
+  border: solid 1px blue;
+  margin-top: 25px;
+  min-height: 500px;
+}
+
+input {
+  text-transform: uppercase;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
 
 .error-message {
   border: solid 1px black;
-  position: fixed;
   width: 100%;
   top: 0;
   background-color: rgba(255, 0, 0, 0.5);
 }
 
-input {
-  text-transform: uppercase;
+.hide-message {
+  display: none;
+}
+
+.close-icon {
+  float: right;
+  bottom: 7px;
+}
+
+.search-input button {
+  margin: 10px;
+}
+
+.toggle-input {
+  position: absolute;
+  right: 20%;
+  z-index: 100;
+  font-weight: 600;
+}
+
+.stock-container {
+  margin-top: 30px;
+}
+
+.stock-container div {
+  margin: 0 auto;
 }

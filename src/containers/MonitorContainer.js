@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   TextField,
   Button,
   Switch,
   FormControl,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -29,13 +28,21 @@ const Monitor = () => {
 
   const [searchDetails, setSearchDetails] = useState(initialSearchDetails);
   const [toggleView, setToggleView] = useState(false);
+  const [hideMessage, setHideMessage] = useState(false);
 
   const dispatch = useDispatch();
 
-  const { tickerData, loading, error } = useSelector((state) => state.result);
+  const { tickerData, error, errorMessage } = useSelector(
+    (state) => state.result
+  );
 
   const handleViewChange = () => {
     setToggleView(!toggleView);
+  };
+
+  const handleErrorMessage = () => {
+    setHideMessage(!hideMessage);
+    window.location.reload();
   };
 
   const handleSearchDetailsChange = (event) => {
@@ -59,25 +66,39 @@ const Monitor = () => {
     dispatch(getTickerHistory(searchDetails));
   };
 
-  //if (loading) return <p>Loading...</p>;
-  //if (error) return <div className="error-message">Error!</div>;
+  if (error)
+    return (
+      <div className={hideMessage ? "hide-message" : "error-message"}>
+        {errorMessage}
+        <Button
+          color="default"
+          className="close-icon"
+          onClick={() => handleErrorMessage()}
+        >
+          X
+        </Button>
+      </div>
+    );
 
   return (
     <div>
-      <TextField
-        name="security-ticker"
-        label="Security Ticker"
-        variant="outlined"
-        onChange={handleSearchDetailsChange}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => startSearch()}
-        disabled={!searchDetails.securityTicker}
-      >
-        Search
-      </Button>
+      <div className="search-input">
+        <TextField
+          name="security-ticker"
+          label="Security Ticker"
+          variant="outlined"
+          onChange={handleSearchDetailsChange}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => startSearch()}
+          disabled={!searchDetails.securityTicker}
+        >
+          Search
+        </Button>
+      </div>
+
       <FormControl component="fieldset">
         <RadioGroup
           row
@@ -89,46 +110,57 @@ const Monitor = () => {
         >
           <FormControlLabel
             value="TIME_SERIES_MONTHLY"
-            control={<Radio color="primary" />}
+            control={<Radio color="primary" size="small" />}
             label="Monthly"
             labelPlacement="bottom"
           />
           <FormControlLabel
             value="TIME_SERIES_WEEKLY"
-            control={<Radio color="primary" />}
+            control={<Radio color="primary" size="small" />}
             label="Weekly"
             labelPlacement="bottom"
           />
           <FormControlLabel
             value="TIME_SERIES_DAILY"
-            control={<Radio color="primary" />}
+            control={<Radio color="primary" size="small" />}
             label="Daily"
             labelPlacement="bottom"
           />
           <FormControlLabel
             value="TIME_SERIES_INTRADAY"
-            control={<Radio color="primary" />}
+            control={<Radio color="primary" size="small" />}
             label="Intraday"
             labelPlacement="bottom"
           />
         </RadioGroup>
       </FormControl>
-      Chart
-      <Switch
-        checked={toggleView}
-        onChange={handleViewChange}
-        color="default"
-        inputProps={{ "aria-label": "primary checkbox" }}
-      />
-      Table
-      {toggleView ? (
-        <TableChart searchResult={tickerData} />
-      ) : (
-        <CandlestickChart
-          searchResult={tickerData}
-          timeSeries={timeFrame[searchDetails.timeSeries]}
-        />
-      )}
+
+      <div className="stock-container">
+        {tickerData["Meta Data"] && (
+          <div className="toggle-input">
+            Chart
+            <Switch
+              checked={toggleView}
+              onChange={handleViewChange}
+              color="default"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+            Table
+          </div>
+        )}
+
+        {toggleView ? (
+          <TableChart
+            searchResult={tickerData}
+            timeSeries={timeFrame[searchDetails.timeSeries]}
+          />
+        ) : (
+          <CandlestickChart
+            searchResult={tickerData}
+            timeSeries={timeFrame[searchDetails.timeSeries]}
+          />
+        )}
+      </div>
     </div>
   );
 };

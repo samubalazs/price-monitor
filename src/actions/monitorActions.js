@@ -13,14 +13,21 @@ export const getTickerHistory = (details) => async (dispatch) => {
   try {
     const res = await axios.get(endPoint);
 
-    dispatch({
-      type: GET_TICKER_HISTORY,
-      payload: res.data,
-    });
-  } catch (e) {
+    if (res.data["Error Message"]) {
+      dispatch({
+        type: HISTORY_ERROR,
+        payload: res.data["Error Message"],
+      });
+    } else {
+      dispatch({
+        type: GET_TICKER_HISTORY,
+        payload: res.data,
+      });
+    }
+  } catch (error) {
     dispatch({
       type: HISTORY_ERROR,
-      payload: console.log(e),
+      payload: console.log(error),
     });
   }
 };

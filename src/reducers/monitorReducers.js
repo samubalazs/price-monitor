@@ -2,8 +2,8 @@ import { GET_TICKER_HISTORY, HISTORY_ERROR } from "../actions/types";
 
 const initialState = {
   tickerData: [],
-  loading: true,
   error: false,
+  errorMessage: "",
 };
 const monitorReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -11,12 +11,12 @@ const monitorReducer = (state = initialState, action) => {
       return {
         ...state,
         tickerData: action.payload,
-        loading: false,
       };
     case HISTORY_ERROR:
       return {
         ...state,
         error: true,
+        errorMessage: action.payload,
       };
     default:
       return state;

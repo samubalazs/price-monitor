@@ -27,14 +27,17 @@ const CandlestickChart = (data) => {
       ],
     ];
     for (const property in object) {
-      const date = property;
+      const date =
+        data.timeSeries === "Time Series (5min)"
+          ? property.split(" ").pop().slice(0, 5)
+          : property;
       const open = object[property]["1. open"];
       const high = object[property]["2. high"];
       const low = object[property]["3. low"];
       const close = object[property]["4. close"];
-      result.push([date, open, high, low, close]);
+      result.push([date, low, open, close, high]);
     }
-    return result;
+    return result.slice(0, 30);
   };
 
   const buildMetaData = () => {
@@ -42,33 +45,35 @@ const CandlestickChart = (data) => {
     const information = metaSource["1. Information"];
     const symbol = metaSource["2. Symbol"];
     const lastRefreshed = metaSource["3. Last Refreshed"];
-    const timeZone = metaSource["4. Time Zone"];
-    return [information, symbol, lastRefreshed, timeZone];
+    return [information, symbol, lastRefreshed];
   };
 
   return (
     <div>
-      {data.searchResult["Meta Data"] && (
-        <p>
-          Information: {buildMetaData()[0]}
-          <br />
-          Symbol: {buildMetaData()[1]}, Last Refreshed: {buildMetaData()[2]},
-          Time Zone: {buildMetaData()[3]}
-        </p>
-      )}
-
       {data.searchResult[data.timeSeries] && (
         <Chart
-          width={"100%"}
+          width={1100}
           height={350}
           chartType="CandlestickChart"
           loader={<div>Loading Chart</div>}
           data={buildChartData(data.searchResult[data.timeSeries])}
           options={{
             legend: "none",
+            animation: {
+              startup: true,
+              easing: "linear",
+              duration: 1000,
+            },
+            title: buildMetaData()[0],
           }}
           rootProps={{ "data-testid": "1" }}
         />
+      )}
+
+      {data.searchResult["Meta Data"] && (
+        <p>
+          Symbol: {buildMetaData()[1]}, Last Refreshed: {buildMetaData()[2]}
+        </p>
       )}
     </div>
   );
