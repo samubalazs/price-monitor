@@ -59,11 +59,6 @@ const CandlestickChart = (data) => {
           data={buildChartData(data.searchResult[data.timeSeries])}
           options={{
             legend: "none",
-            animation: {
-              startup: true,
-              easing: "linear",
-              duration: 1000,
-            },
             title: buildMetaData()[0],
           }}
           rootProps={{ "data-testid": "1" }}
