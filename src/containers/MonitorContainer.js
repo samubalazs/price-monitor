@@ -20,18 +20,19 @@ const Monitor = () => {
     timeSeries: "TIME_SERIES_MONTHLY",
   };
 
+  const timeFrame = {
+    TIME_SERIES_MONTHLY: "Monthly Time Series",
+    TIME_SERIES_WEEKLY: "Weekly Time Series",
+    TIME_SERIES_DAILY: "Time Series (Daily)",
+    TIME_SERIES_INTRADAY: "Time Series (5min)",
+  };
+
   const [searchDetails, setSearchDetails] = useState(initialSearchDetails);
-  const [toggleView, setToggleView] = useState(true);
+  const [toggleView, setToggleView] = useState(false);
 
   const dispatch = useDispatch();
 
   const { tickerData, loading, error } = useSelector((state) => state.result);
-
-  useEffect(() => {
-    setTimeout(() => {
-      //dispatch(getTickerHistory());
-    }, 1000);
-  }, []);
 
   const handleViewChange = () => {
     setToggleView(!toggleView);
@@ -52,13 +53,14 @@ const Monitor = () => {
         });
       }
     }
-    console.log(searchDetails);
   };
 
-  const saveContent = () => {
-    console.log(searchDetails);
+  const startSearch = () => {
     dispatch(getTickerHistory(searchDetails));
   };
+
+  //if (loading) return <p>Loading...</p>;
+  //if (error) return <div className="error-message">Error!</div>;
 
   return (
     <div>
@@ -71,7 +73,7 @@ const Monitor = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => saveContent()}
+        onClick={() => startSearch()}
         disabled={!searchDetails.securityTicker}
       >
         Search
@@ -119,7 +121,14 @@ const Monitor = () => {
         inputProps={{ "aria-label": "primary checkbox" }}
       />
       Table
-      {toggleView ? <CandlestickChart /> : <TableChart />}
+      {toggleView ? (
+        <TableChart searchResult={tickerData} />
+      ) : (
+        <CandlestickChart
+          searchResult={tickerData}
+          timeSeries={timeFrame[searchDetails.timeSeries]}
+        />
+      )}
     </div>
   );
 };
