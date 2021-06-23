@@ -9,8 +9,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## How to use
 
-Type any valid Security Ticker and select Time Period
-Click on Search button to see result
+Type any valid Security Ticker and select Time Period | Click on Search button to see result
 
 Switch view and check result in Chart or Table format
 
