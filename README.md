@@ -17,4 +17,4 @@ In case of invalid call or any other error, Error Message will be displayed
 
 ## Possible improvements
 
-handle specific error messages | auto-suggest possibilities | range filter to the chart
+handle specific error messages | auto-suggest possibilities | range filter to the chart | hide API key

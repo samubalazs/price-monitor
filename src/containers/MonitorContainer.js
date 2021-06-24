@@ -135,6 +135,16 @@ const Monitor = () => {
         </RadioGroup>
       </FormControl>
 
+      {!tickerData["Meta Data"] && (
+        <div>
+          <h3>How to use</h3>
+          <p>- Please enter valid security ticker (e.g., AAPL, MSFT, etc.)</p>
+          <p>- Select time period (e.g., AAPL, MSFT, etc.)</p>
+          <p>- Click on Search button</p>
+          <p>- Switch view to check result on chart/table</p>
+        </div>
+      )}
+
       <div className="stock-container">
         {tickerData["Meta Data"] && (
           <div className="toggle-input">
