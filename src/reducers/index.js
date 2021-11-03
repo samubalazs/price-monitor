@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import monitorReducer from "./monitorReducers";
+import contactsReducer from "./contactsReducers";
 export default combineReducers({
-  result: monitorReducer,
+  result: contactsReducer,
 });

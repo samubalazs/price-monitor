@@ -1,11 +1,11 @@
 import "./App.css";
 
-import Monitor from "./containers/MonitorContainer";
+import Contacts from "./containers/ContactsContainer";
 
 export default function App() {
   return (
     <div className="App">
-      <Monitor />
+      <Contacts />
     </div>
   );
 }
